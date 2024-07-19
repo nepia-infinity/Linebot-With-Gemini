@@ -18,7 +18,7 @@ app = Flask(__name__)
 line_bot_api = LineBotApi(LINEBOT_TOKEN)
 handler = WebhookHandler(LINEBOT_SECRET)
 
-@app.route("/")
+@app.route("/Linebot-With-Gemini")
 def displayAccessSuccessMessage():
     return "サーバールートのアクセスに成功しました"
 
