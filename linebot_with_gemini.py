@@ -21,7 +21,7 @@ def displayRootAccessConfirmation():
 
 
 # LINEBOTのコールバックを設定する
-@app.route("/callback", methods=["POST"])
+@app.route("/linebot-with-gemini/callback", methods=['POST'])
 def callback():
     signature = request.headers["X-Line-Signature"]
     body = request.get_data(as_text=True)
