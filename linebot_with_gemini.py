@@ -62,7 +62,7 @@ if __name__ == "__main__":
     
     # FlaskでSSLを使用してWebサーバーを起動
     import ssl
-    ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+    ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
     ssl_context.load_cert_chain(
         f'{cert_dir}fullchain.pem',
         f'{cert_dir}privkey.pem'
