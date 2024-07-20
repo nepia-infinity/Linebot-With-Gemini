@@ -32,6 +32,7 @@ def callback():
         
     except linebot.exceptions.InvalidSignatureError:
         abort(400)
+        
     return "OK"
 
 
@@ -67,4 +68,5 @@ if __name__ == "__main__":
         f'{cert_dir}privkey.pem'
     )
     
-    app.run(debug=True, port=443, host='0.0.0.0', ssl_context=ssl_context)
+    # 5000番ポートを使用するように変更
+    app.run(debug=True, port=5000, host='0.0.0.0', ssl_context=ssl_context)
