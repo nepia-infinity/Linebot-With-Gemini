@@ -5,9 +5,6 @@ from linebot import LineBotApi, WebhookHandler
 import linebot.exceptions
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
 
-genai.configure(api_key=os.environ["GEMINI_API_KEY"])
-model = genai.GenerativeModel(model_name="gemini-1.5-flash")
-
 LINEBOT_TOKEN  = os.getenv("LINEBOT_CHANNEL_ACCESS_TOKEN")
 LINEBOT_SECRET = os.getenv("LINEBOT_CHANNEL_SECRET")
 
@@ -18,8 +15,8 @@ app = Flask(__name__)
 line_bot_api = LineBotApi(LINEBOT_TOKEN)
 handler = WebhookHandler(LINEBOT_SECRET)
 
-@app.route("/Linebot-With-Gemini")
-def displayAccessSuccessMessage():
+@app.route("/linebot-with-gemini")
+def displayRootAccessConfirmation():
     return "サーバールートのアクセスに成功しました"
 
 
@@ -46,6 +43,8 @@ def handle_message(event):
     prompt = event.message.text
     
     # GeminiのAPIを呼ぶ
+    genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+    model = genai.GenerativeModel(model_name="gemini-1.5-flash")
     response = model.generate_content(prompt)
     print(response)
     
@@ -54,3 +53,18 @@ def handle_message(event):
         event.reply_token,
         TextSendMessage(response.text)
     )
+    
+
+if __name__ == "__main__":
+    # SSL証明書が保存されたディレクトリを指定
+    cert_dir = '/etc/letsencrypt/live/bot.digitalcreation.tokyo/'
+    
+    # FlaskでSSLを使用してWebサーバーを起動
+    import ssl
+    ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+    ssl_context.load_cert_chain(
+        f'{cert_dir}fullchain.pem',
+        f'{cert_dir}privkey.pem'
+    )
+    
+    app.run(debug=True, port=443, host='0.0.0.0', ssl_context=ssl_context)
